@@ -1,5 +1,7 @@
 package board.configuration;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -55,15 +57,22 @@ public class DatabaseConfiguration {
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
 		return new SqlSessionTemplate(sqlSessionFactory);
 	}
-	
+
 	@Bean
-	@ConfigurationProperties(prefix="mybatis.configuration")
+	@ConfigurationProperties(prefix = "mybatis.configuration")
 	public org.apache.ibatis.session.Configuration mybatisConfig() {
 		return new org.apache.ibatis.session.Configuration();
 	}
-	
+
 	@Bean
 	public PlatformTransactionManager transactionManager() throws Exception {
 		return new DataSourceTransactionManager(dataSource());
+	}
+
+	// JPA 설정
+	@Bean
+	@ConfigurationProperties(prefix = "spring.jpa")
+	public Properties hibernateConfig() {
+		return new Properties();
 	}
 }
